@@ -27,8 +27,8 @@ void Potentiometer::run()
   values[0] = analogRead(MOISTURE);
   Serial.println(values[0]);
   values[0] = Ratio(values[0]) * MAX_MOISTURE;
-//  values[1] = analogRead(TEMPERATURE);
-  values[1] = Ratio(values[1]) * MAX_TEMPERATURE;
+  values[1] = analogRead(TEMPERATURE);
+  values[1] = Ratio(values[1]) * MAX_TEMPERATURE * 100.0f;
   initialized = true; runned();
 }
 
@@ -44,6 +44,6 @@ bool Potentiometer::temperature(float* value)
 {
   *value = float(values[1]);
   bool dirty = caches[1] != int(*value);
-  caches[1] = *value;
+  caches[1] = *value; *value /= 100.0f;
   return dirty || !initialized;
 }

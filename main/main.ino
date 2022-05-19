@@ -51,7 +51,7 @@ void setup()
 void loop()
 {
   char value[4] = {0};
-  char buffer[20] = {0};
+  char buffer[21] = {0};
 
   bool dirty = false;
   if (digitalRead(MODEPIN) == HIGH) {
@@ -68,7 +68,7 @@ void loop()
     dtostrf(humidity, 4, 2, value);
     memset(buffer, 0, sizeof(buffer));
     sprintf(buffer, "%-12s %5s ", "Humidity:", value);
-    lcd.setCursor(0,0); buffer[19]='%'; lcd.print(buffer);
+    lcd.setCursor(0,0); buffer[19]='%'; buffer[20]= '\0'; lcd.print(buffer); 
   }
   // update tempature display if changed
   float temperature = 0.0f;
@@ -77,14 +77,14 @@ void loop()
     dtostrf(temperature, 4, 2, value);
     memset(buffer, 0, sizeof(buffer));
     sprintf(buffer, "%-12s %5s ", "Temperature:", value);
-    lcd.setCursor(0,1); buffer[19]='C'; lcd.print(buffer); 
+    lcd.setCursor(0,1); buffer[19]='C'; buffer[20]= '\0'; lcd.print(buffer); 
   }
   // update moisture display if changed
   int moisture = 0;
   if (model->moisture(&moisture) || dirty) {
     memset(buffer, 0, sizeof(buffer));
     sprintf(buffer, "%-12s %4d", "SoilMoisture:", moisture);
-    lcd.setCursor(0,2); lcd.print(buffer);
+    lcd.setCursor(0,2); buffer[20]= '\0'; lcd.print(buffer);
   }
   // update moisture display if changed
   if (model == sensor) {
