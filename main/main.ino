@@ -22,6 +22,8 @@ Sensor* sensor;
 #define PUMPPIN 8
 #define COOLERPIN 4
 #define MODEPIN 13
+#define MOSITURE_OFFSET 20
+#define TEMPERATURE_OFFSET 2.0f
 
 void setup()
 {
@@ -90,13 +92,13 @@ void loop()
   if (model == sensor) {
     int max_moisture = 0;
     potentionmeter->moisture(&max_moisture);
-    if (moisture < max_moisture)
+    if ((max_moisture - moisture) >= MOSITURE_OFFSET)
       digitalWrite(PUMPPIN, LOW);
     else
       digitalWrite(PUMPPIN, HIGH);
     float max_temperature = 0.0f;
     potentionmeter->temperature(&max_temperature);
-    if (temperature > max_temperature)
+    if ((temperature - max_temperature) >= TEMPERATURE_OFFSET)
       digitalWrite(COOLERPIN, LOW);
     else
       digitalWrite(COOLERPIN, HIGH);
